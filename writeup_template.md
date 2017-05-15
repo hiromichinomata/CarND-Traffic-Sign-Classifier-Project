@@ -45,12 +45,12 @@ Here is an exploratory visualization of the data set. The image below is one of 
 
 As a first step, I decided to convert the image data type to float32 beacause I want to change the mean of image to zero.
 
-Then, I subtract the mean from each image.
-It produced the better result than total mean of image set.
+Originally, I used numpy to subtract the mean from each image.
+However by using tf.image.per_image_standardization, the better result was achieved for the images on the web because standard deviation is considered.
 
-As a last step, I normalized the image data to around [-1, 1].
+Also, the random change of  rotation, brightness, contrast are performed for better generalization.
 
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 My final model consisted of the following layers:
 
@@ -76,7 +76,7 @@ My final model consisted of the following layers:
 | Fully connected	| Outputs 43								|
 | (Softmax)		| 		-						|
 
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 To train the model, I used an Adam optimizer.
 At first, I fixed all hyperparameters except for batch size with small epoch.
@@ -86,12 +86,12 @@ Then, I used the same one freedom way for rate and keep_prob and model structure
 After some improvement, batch size was increased and tried again about hyperparameter search.
 Then I fixed the epoch which achieved target accuracy.
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of 0.997
-* validation set accuracy of 0.949
-* test set accuracy of 0.932
+* training set accuracy of 0.998
+* validation set accuracy of 0.936
+* test set accuracy of 0.936
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
@@ -100,7 +100,7 @@ If an iterative approach was chosen:
 
 * What were some problems with the initial architecture?
 
-  Accuracy was low copared with target.
+  Accuracy was low compared with target.
 
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
 
@@ -116,9 +116,9 @@ If an iterative approach was chosen:
    Dopout addition significantly imroved the accuracy.
    On the other hand, activation funcion change didn't affect so much.
 
-###Test a Model on New Images
+### Test a Model on New Images
 
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
 Here are five German traffic signs that I found on the web:
 
@@ -130,33 +130,92 @@ Here are five German traffic signs that I found on the web:
 
 The second image might be difficult to classify because it contains multiple signs.
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					|
+| Image			            | Prediction	        		                			|
 |:---------------------:|:---------------------------------------------:|
-| Stop Sign      		| Priority road   									|
-| Speed limit(30km/h)     			| Wild animals crossing 										|
-| Children crossing					| Road narrows on the right											|
-| Speed Limit(50km/h)	      		| Road narrows on the right					 				|
-| Yield			| No passing      							|
+| Stop Sign         		| Priority road   							             		|
+| Speed limit(30km/h)		| Priority road         							        	|
+| Children crossing			| Children crossing       					    				|
+| Speed Limit(50km/h)		| Speed Limit(50km/h)      					        		|
+| Yield			            | No passing for vehicles over 3.5 metric tons 	|
 
 
-The model wasn't able to correctly guess any of the 5 traffic signs.
+The model was able to correctly guess 2 of the 5 traffic signs.
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 38th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 288th cell of the Ipython notebook.
 
-For the second image, The top five soft max probabilities were
+Here is the result.
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| .29        			| Wild animals crossing   									|
-| .19     				| Bicycles crossing 										|
-| .19					| Road work											|
-| .18	      			| General caution					 				|
-| .13				    | keep right      							|
+Image 0: Stop
+  * Priority road
+    1.0
+  * No passing
+    2.11684e-10
+  * No passing for vehicles over 3.5 metric tons
+    3.65495e-13
+  * Yield
+    1.20289e-15
+  * End of no passing
+    5.16922e-18
 
-It is natural since the image contains Bicycles crossing.
+
+Image 1: Speed limit (30km/h)
+  * Priority road
+    0.999943
+  * Traffic signals
+    3.63868e-05
+  * Ahead only
+    1.16267e-05
+  * Yield
+    6.31524e-06
+  * Road work
+    1.91603e-06
+
+
+Image 2: Children crossing
+  * Children crossing
+    0.841416
+  * Speed limit (20km/h)
+    0.153635
+  * Road narrows on the right
+    0.00184727
+  * Slippery road
+    0.00142969
+  * Bicycles crossing
+    0.00127747
+
+
+Image 3: Speed limit (50km/h)
+  * Speed limit (50km/h)
+    0.999943
+  * Speed limit (80km/h)
+    3.69199e-05
+  * Speed limit (30km/h)
+    2.05839e-05
+  * Speed limit (60km/h)
+    5.93463e-09
+  * Speed limit (100km/h)
+    1.44111e-13
+
+
+Image 4: Yield
+  * No passing for vehicles over 3.5 metric tons
+    0.549298
+  * Priority road
+    0.403583
+  * Stop
+    0.0209008
+  * No passing
+    0.0161593
+  * No vehicles
+    0.00990566
+
+Regarding image 1, original my estimation was the prediction is uncertain. However, neural net made a mistake with full confidence.
+Based on the dataset, neural network might assume the region of interest is only one area.
+
+On the other hand, regarding image 2, the prediction is a bit uncertain between Children crossing and Speed limit (20km/h). It is natural because the both signs have the red bounding with text in the center.
